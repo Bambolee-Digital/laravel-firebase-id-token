@@ -197,7 +197,7 @@ If you discover any security related issues, please email security@bambolee.digi
 
 ## Credits
 
-- [Your Name](https://github.com/yourusername)
+- [Kellvem Barbosa](https://github.com/kellvembarbosa)
 - [All Contributors](../../contributors)
 
 ## License
