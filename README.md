@@ -35,6 +35,45 @@ php artisan vendor:publish --provider="BamboleeDigital\LaravelFirebaseIdToken\Pr
 
 This will create a `bambolee-firebase.php` configuration file in your `config` directory.
 
+## Database Migration
+
+This package requires an `external_id` column in your users table to store the Firebase User ID. A migration is included to add this column. To run the migration, execute:
+
+```bash
+php artisan migrate
+```
+
+If you need to customize the migration, you can publish it:
+
+```bash
+php artisan vendor:publish --provider="BamboleeDigital\LaravelFirebaseIdToken\Providers\FirebaseAuthServiceProvider" --tag="migrations"
+```
+
+Then, you can modify the migration file in your `database/migrations` directory before running `php artisan migrate`.
+
+## Updating User Model
+
+After adding the `external_id` column, make sure to add it to the `$fillable` array in your User model:
+
+```php
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'external_id', // Add this line
+    ];
+
+    // ...
+}
+```
+
 ### Firebase Credentials
 
 Set your Firebase credentials in your `.env` file:
