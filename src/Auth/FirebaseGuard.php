@@ -17,6 +17,7 @@ class FirebaseGuard implements Guard
     protected $user;
     protected $firebaseAuth;
     protected $userModel;
+    protected $creatingCallback;
 
     public function __construct(UserProvider $provider, Request $request, FirebaseAuthService $firebaseAuth)
     {
@@ -24,6 +25,12 @@ class FirebaseGuard implements Guard
         $this->provider = $provider;
         $this->firebaseAuth = $firebaseAuth;
         $this->userModel = Config::get('bambolee-firebase.user_model', Config::get('auth.providers.users.model'));
+    }
+
+    public function creatingUser($callback)
+    {
+        $this->creatingCallback = $callback;
+        return $this;
     }
 
     public function check()
@@ -68,6 +75,11 @@ class FirebaseGuard implements Guard
                     'password' => bcrypt(Str::random(16)),
                     'external_id' => $firebaseUser['user_id'],
                 ]);
+                
+                if ($this->creatingCallback) {
+                    call_user_func($this->creatingCallback, $user);
+                }
+                
             } elseif ($user) {
                 $updateData = [
                     'name' => $firebaseUser['name'],

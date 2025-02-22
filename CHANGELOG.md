@@ -2,6 +2,9 @@
 
 All notable changes to `laravel-firebase-id-token` will be documented in this file.
 
+## 1.0.2 2025-02-22
+- Update callback_user
+
 ## 1.0.1 2024-09-09
 - added migrations
 
